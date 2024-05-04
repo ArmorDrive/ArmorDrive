@@ -1,18 +1,25 @@
 package com.ua.armordrive.armor_drive.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ua.armordrive.armor_drive.enums.BodyType;
+import com.ua.armordrive.armor_drive.enums.Brand;
+import com.ua.armordrive.armor_drive.enums.FuelType;
+import com.ua.armordrive.armor_drive.enums.GearBox;
+import com.ua.armordrive.armor_drive.enums.State;
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 import java.util.List;
+
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 
 @Entity
+@Getter
+@Setter
 public class SaleListing {
 
     @Id
@@ -29,6 +36,8 @@ public class SaleListing {
     )
     private Long id;
 
+    @Enumerated(EnumType.STRING)
+    private Brand brand;
     @Column
     private String model;
 
@@ -57,84 +66,17 @@ public class SaleListing {
     @Column
     private String description;
 
-    public Long getId() {
-        return id;
-    }
+    @Enumerated(EnumType.STRING)
+    private BodyType bodyType;
+    @Enumerated(EnumType.STRING)
+    private GearBox gearBox;
+    @Enumerated(EnumType.STRING)
+    private FuelType fuelType;
+    @Enumerated(EnumType.STRING)
+    private State state;
 
-    public void setId(final Long id) {
-        this.id = id;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(final String model) {
-        this.model = model;
-    }
-
-    public List<String> getPictures() {
-        return pictures;
-    }
-
-    public void setPictures(final List<String> pictures) {
-        this.pictures = pictures;
-    }
-
-    public Integer getPrice() {
-        return price;
-    }
-
-    public void setPrice(final Integer price) {
-        this.price = price;
-    }
-
-    public Integer getSeatsNumber() {
-        return seatsNumber;
-    }
-
-    public void setSeatsNumber(final Integer seatsNumber) {
-        this.seatsNumber = seatsNumber;
-    }
-
-    public Double getEngineDisplacement() {
-        return engineDisplacement;
-    }
-
-    public void setEngineDisplacement(final Double engineDisplacement) {
-        this.engineDisplacement = engineDisplacement;
-    }
-
-    public Integer getKilometerage() {
-        return kilometerage;
-    }
-
-    public void setKilometerage(final Integer kilometerage) {
-        this.kilometerage = kilometerage;
-    }
-
-    public LocalDate getProductionYear() {
-        return productionYear;
-    }
-
-    public void setProductionYear(final LocalDate productionYear) {
-        this.productionYear = productionYear;
-    }
-
-    public LocalDate getPublishingDate() {
-        return publishingDate;
-    }
-
-    public void setPublishingDate(final LocalDate publishingDate) {
-        this.publishingDate = publishingDate;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(final String description) {
-        this.description = description;
-    }
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    @JsonIgnore
+    User user;
 
 }
