@@ -4,8 +4,12 @@ import com.ua.armordrive.armor_drive.enums.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -13,7 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "\"User\"")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @Column(nullable = false, updatable = false)
@@ -72,4 +76,34 @@ public class User {
         saleListing.setUser(null);
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        //todo getAuthorities()
+        return List.of(new SimpleGrantedAuthority(role.toString()));
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return !ban;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return confirmed;
+    }
 }
