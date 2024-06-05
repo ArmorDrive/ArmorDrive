@@ -6,6 +6,7 @@ import com.ua.armordrive.armor_drive.repos.UserRepository;
 import com.ua.armordrive.armor_drive.util.NotFoundException;
 import java.util.List;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -13,9 +14,11 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(final UserRepository userRepository) {
+    public UserService(final UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<UserDTO> findAll() {
@@ -64,7 +67,9 @@ public class UserService {
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
-        user.setPassword(userDTO.getPassword());
+        user.setPassword(
+                passwordEncoder.encode(userDTO.getPassword())
+        );
         user.setPhoneNumber(userDTO.getPhoneNumber());
         user.setBan(userDTO.getBan());
         user.setConfirmed(userDTO.getConfirmed());

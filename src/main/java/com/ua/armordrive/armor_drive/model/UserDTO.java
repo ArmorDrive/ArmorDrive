@@ -10,12 +10,10 @@ public class UserDTO {
 
     @NotNull
     @Size(max = 255)
-    @UserFirstNameUnique
     private String firstName;
 
     @NotNull
     @Size(max = 255)
-    @UserLastNameUnique
     private String lastName;
 
     @NotNull
@@ -23,6 +21,7 @@ public class UserDTO {
     @UserEmailUnique
     private String email;
 
+    @NotNull
     @Size(max = 255)
     private String password;
 
